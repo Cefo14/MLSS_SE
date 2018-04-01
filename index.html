@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mario & Luigi SuperStar Saga Save Editor</title>
+	<meta http-equiv="content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="description" content="A savegame editor for Mario & Luigi SuperStar Saga."/>
+	<meta name="keywords" content="html5, savegame, save, editor, hack, exploit, 3ds, mario, luigi, Super, Star, Saga, SuperStar, free, exp"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet"> 
+	<link rel="stylesheet" type="text/css" href="./css/app.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
+	<script type="text/javascript" src="./js/Files.js"></script>
+	<script type="text/javascript" src="./js/FileSaver.js"></script>
+	<script type="text/javascript" src="./js/SaveEditor.js"></script>
+	<script type="text/javascript" src="./js/app.js"></script>
+</head>
+	<body>
+		<center>
+			<img src="https://www.koi-nya.net/img/subidos_posts/2017/06/Mario-Luigi-Superstar-Saga-Bowser%E2%80%99s-Minions-20.png" class="img-fluid head-img">
+		</center>
+		
+		<header class="container">
+			<form action="/file-upload" class="dropzone" id="dropZone">
+			</form>
+		</header>
+
+		<section id="app" class="container"></section>
+		
+		<button id="save" onclick="save()" class="float hide green-bg black-text">
+			<span class="glyphicon glyphicon-save	" aria-hidden="true"></span>
+		</button>
+	</body>
+</html>
