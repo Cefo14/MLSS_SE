@@ -60,6 +60,6 @@ const OFFSETS = {
 
 	"BEANS" : {
 		"START" : "0x130",  // int8
-		"END"   : "0x134",  // int8
+		"END"   : "0x133",  // int8
 	},
 }
