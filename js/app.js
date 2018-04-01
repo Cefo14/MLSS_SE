@@ -60,7 +60,7 @@ function onChange(file)
 			{
 				let id = offset.toLowerCase() + '-' + stat.toLowerCase()
 				let value
-				if(stat == "XP_CURRENT")
+				if(stat == "CURRENT_XP")
 					value = files.readInt32(OFFSETS[offset][stat])
 				else
 					value = files.readInt16(OFFSETS[offset][stat])
