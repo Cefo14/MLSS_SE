@@ -1,4 +1,4 @@
-(function(DOC, ZONE, SAVER)
+(function(DOC, ZONE, SAVER, OFST)
 {	
 	var app = DOC.querySelector("#app")
 	var btnSave = DOC.querySelector("#save")
@@ -94,7 +94,7 @@
 
 	function addMoney()
 	{
-		component = makeInput("money", file.readInt32(OFFSETS["MONEY"]), "MONEY")
+		component = makeInput("money", file.readInt32(OFST["MONEY"]), "MONEY")
 		app.appendChild(component)
 	}
 
@@ -107,7 +107,7 @@
 					var values = ["ITEMS", "COFFEE", "JEANS", "BADJES", "ACCESSORIES", "BEANS"]
 					values.forEach(function(value)
 					{
-						for (var i = OFFSETS[value]["START"]; i <= OFFSETS[value]["END"]; i++)
+						for (var i = OFST[value]["START"]; i <= OFST[value]["END"]; i++)
 							file.writeInt8(i, 99)
 					})
 
@@ -128,14 +128,14 @@
 		{
 			component = makeBox(offset, [offset.toLowerCase()])
 			app.appendChild(component)
-			for (var stat in OFFSETS[offset])
+			for (var stat in OFST[offset])
 			{
 				var id = offset.toLowerCase() + '-' + stat.toLowerCase()
 				var value
 				if(stat == "CURRENT_XP")
-					value = file.readInt32(OFFSETS[offset][stat])
+					value = file.readInt32(OFST[offset][stat])
 				else
-					value = file.readInt16(OFFSETS[offset][stat])
+					value = file.readInt16(OFST[offset][stat])
 				
 				component = makeInput(id, value, stat)
 				app.appendChild(component)
@@ -158,19 +158,19 @@
 				continue
 
 			if(id == "MONEY")
-				file.writeInt32(OFFSETS[id], value)
+				file.writeInt32(OFST[id], value)
 
 			if(id.indexOf("-") > -1)
 			{
 				var [offset, stat] = id.split("-")
 				if(stat == "CURRENT_XP")
-					file.writeInt32(OFFSETS[offset][stat], value)
+					file.writeInt32(OFST[offset][stat], value)
 				else
-					file.writeInt16(OFFSETS[offset][stat], value)
+					file.writeInt16(OFST[offset][stat], value)
 			}
 
 			else
-				file.writeInt16(OFFSETS[id], value)
+				file.writeInt16(OFST[id], value)
 		}
 	}
-})(document, Dropzone, saveAs)
+})(document, Dropzone, saveAs, OFFSETS)
