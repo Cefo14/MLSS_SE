@@ -1,5 +1,3 @@
-'use strict'
-
 function Files(file) 
 {
 	if (typeof window.FileReader != "function") 
@@ -37,7 +35,7 @@ Files.prototype.isReady = function()
 
 Files.prototype.save = function(saveAs) 
 {
-	let data;
+	var data;
 	data = new Blob([this._fileReader.dataView], { type: this._fileType });
 	saveAs(data, this._fileName)
 }

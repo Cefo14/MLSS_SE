@@ -10,11 +10,6 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet"> 
 	<link rel="stylesheet" type="text/css" href="./css/app.css">
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
-	<script type="text/javascript" src="./js/Files.js"></script>
-	<script type="text/javascript" src="./js/FileSaver.js"></script>
-	<script type="text/javascript" src="./js/SaveEditor.js"></script>
-	<script type="text/javascript" src="./js/app.js"></script>
 </head>
 	<body>
 		<center>
@@ -22,14 +17,19 @@
 		</center>
 		
 		<header class="container">
-			<form action="/file-upload" class="dropzone" id="dropZone">
+			<form action="/file-upload" class="dropzone" id="uploadDropZone">
 			</form>
 		</header>
 
 		<section id="app" class="container"></section>
 		
-		<button id="save" onclick="save()" class="float hide green-bg black-text">
+		<button id="save" class="float hide green-bg black-text">
 			<span class="glyphicon glyphicon-save	" aria-hidden="true"></span>
 		</button>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
+		<script type="text/javascript" src="./js/Files.js"></script>
+		<script type="text/javascript" src="./js/FileSaver.js"></script>
+		<script type="text/javascript" src="./js/SaveEditor.js"></script>
+		<script type="text/javascript" src="./js/app.js"></script>
 	</body>
 </html>

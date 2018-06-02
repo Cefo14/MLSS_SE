@@ -1,5 +1,5 @@
-const OFFSETS = {
-	"MONEY": 0x50, //int32
+var OFFSETS = {
+	"MONEY": "0x50", //int32
 	
 	"MARIO": {
 		"CURRENT_HP" : "0x00", // int16
