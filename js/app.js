@@ -1,4 +1,4 @@
-(function(DOC, ZONE, SAVER, OFST)
+(function(DOC, ZONE, SAVER, OFST, LVLS, ITEMLIST)
 {	
 	var app = DOC.querySelector("#app")
 	var btnSave = DOC.querySelector("#save")
@@ -32,12 +32,13 @@
 
 		file.onLoadEnd(function()
 		{
+			addBros()
+			
 			component = makeBox("ITEMS & MONEY")
 			app.appendChild(component)
-
+			
 			addMoney()
 			addItems()
-			addPjs()
 		})
 	}
 
@@ -67,12 +68,19 @@
 
 	function makeInput(id, value, text, type, event)
 	{
+		var lvl = false;
+		var bro = id.split('-')[0];
+		
+		if(id.split('-')[1] == "current_xp") {
+			lvl = true;
+		}
+		
 		var div = DOC.createElement("div")
 		div.className = "input-group"
 
 		var span = DOC.createElement("span")
 		span.className = "input-group-addon black-text border"
-		span.appendChild(DOC.createTextNode(text))
+		span.appendChild(DOC.createTextNode(text.replace(/\_/g, ' ')))
 		span.setAttribute("for", id)
 
 		var input = DOC.createElement("input")
@@ -81,6 +89,26 @@
 		input.setAttribute("id", id)
 		input.value = value
 
+		if(lvl) {
+			var lvlSpan1 = DOC.createElement("span")
+			lvlSpan1.className = "input-group-addon black-text border border-middle"
+			lvlSpan1.appendChild(DOC.createTextNode('CURRENT LVL'))
+
+			var lvlSpan2 = DOC.createElement("span")
+			lvlSpan2.className = "form-control black-text border"
+			lvlSpan2.appendChild(DOC.createTextNode(calcBroLvl(bro, value)))
+			lvlSpan2.id = bro + "-current_lvl";
+
+			var CURRENT_XP_EVENT = {
+				type: "input",
+				action: function(e) {
+					DOC.querySelector('#' + lvlSpan2.id).textContent = calcBroLvl(bro, e.target.value);
+				},
+			};
+
+			input.addEventListener(CURRENT_XP_EVENT.type, CURRENT_XP_EVENT.action);
+		}
+
 		if(event)
 		{
 			input.addEventListener(event.type, event.action)
@@ -88,6 +116,10 @@
 
 		div.appendChild(span)
 		div.appendChild(input)
+		if(lvl) {
+			div.appendChild(lvlSpan1)
+			div.appendChild(lvlSpan2)
+		}
 
 		return div
 	}
@@ -101,46 +133,126 @@
 	function addItems()
 	{
 		var MAX_ITEMS_EVENT = {
-				type: "click",
-				action: function()
-				{
-					var values = ["ITEMS", "COFFEE", "JEANS", "BADJES", "ACCESSORIES", "BEANS"]
-					values.forEach(function(value)
-					{
-						for (var i = OFST[value]["START"]; i <= OFST[value]["END"]; i++)
+			type: "click",
+			action: function()
+			{
+				var values = ["ITEMS", "COFFEE", "JEANS", "BADGES", "ACCESSORIES", "BEANS"]
+				values.forEach(function(value) {
+					for (var i = OFST[value]["START"]; i <= OFST[value]["END"]; i++)
+						if (!["170", "231"].includes(itemID))
 							file.writeInt8(i, 99)
-					})
+						else
+							file.writeInt8(i, 0)
+				})
 
-					this.classList.remove("blue-bg")
-					this.classList.add("green-bg")
-					this.classList.add("black-text")
-					this.value = "You have all the items :D"
+				this.classList.remove("blue-bg")
+				this.classList.add("green-bg")
+				this.classList.add("black-text")
+				this.value = "You have all the items :D"
+			}
+		}
+		component = makeInput("max_items", "Click if you want the maximum number of items", "MAX ITEMS", "button", MAX_ITEMS_EVENT)
+		app.appendChild(component)
+
+		var items = {};
+		var values = ["CONSUMABLES", "COFFEE", "BEANS", "JEANS", "BADGES", "ACCESSORIES", ];
+		values.forEach((value) => {
+			items[value] = {};
+			for (var i = OFST[value]["START"]; i <= OFST[value]["END"]; i++) {
+				items[value][i.toString()] = {
+					"name": ITEMLIST[i],
+					"amount": file.readInt8(i),
 				}
 			}
-		component = makeInput("max_items", "Click if you want the maximum number of items", "MAX_ITEMS", "button", MAX_ITEMS_EVENT)
-		app.appendChild(component)
+		});
+
+		app.appendChild(makeBox('Specific Item Amount'))
+		var itemsHolder = DOC.createElement('div')
+		itemsHolder.id = 'ITEMS-HOLDER'
+		itemsHolder.appendChild(makeBox('Items'))
+		var gearHolder = DOC.createElement('div')
+		gearHolder.id = 'GEAR-HOLDER'
+		gearHolder.appendChild(makeBox('Gear'))
+		var itemsClear = DOC.createElement('div')
+		itemsClear.className = "clear"
+
+		for (var category in items) {
+			var catHolder = DOC.createElement('div');
+			catHolder.className = category.toLowerCase() + '-holder';
+			catHolder.appendChild(makeBox(category));
+			for (var itemID in items[category]) {
+				if (!["170", "231"].includes(itemID))
+					var input = makeInput('ITEMS-' + itemID, items[category][itemID].amount, items[category][itemID].name, 'number');
+					catHolder.appendChild(input);
+			}
+			if (['CONSUMABLES', 'COFFEE', 'BEANS'].includes(category)) {
+				itemsHolder.appendChild(catHolder)
+			}
+			else if (category == 'ACCESSORIES') {
+				gearHolder.appendChild(itemsClear.cloneNode())
+				gearHolder.appendChild(catHolder)
+			}
+			else {
+				gearHolder.appendChild(catHolder)
+			}
+		}
+
+		app.appendChild(itemsHolder)
+		app.appendChild(itemsClear)
+		app.appendChild(gearHolder)
+
+		DOC.querySelector('#ITEMS-HOLDER').querySelectorAll('[class$=-holder]').forEach((category) => {
+			category.insertBefore(category.lastChild, category.firstChild.nextElementSibling)
+		});
+		DOC.querySelector('#GEAR-HOLDER').querySelectorAll('[class$=-holder]').forEach((category) => {
+			category.insertBefore(category.lastChild, category.firstChild.nextElementSibling)
+		});
 	}
 
-	function addPjs()
+	function addBros()
 	{
-		var PJ = ["MARIO", "LUIGI"]
-		PJ.forEach(function(offset)
+		var Bro = ["MARIO", "LUIGI"]
+		Bro.forEach(function(offset)
 		{
+			var broHolder = DOC.createElement('div')
+			broHolder.className = offset.toLowerCase() + '-holder'
 			component = makeBox(offset, [offset.toLowerCase()])
-			app.appendChild(component)
+			broHolder.appendChild(component)
 			for (var stat in OFST[offset])
 			{
 				var id = offset.toLowerCase() + '-' + stat.toLowerCase()
 				var value
-				if(stat == "CURRENT_XP")
-					value = file.readInt32(OFST[offset][stat])
-				else
-					value = file.readInt16(OFST[offset][stat])
 				
-				component = makeInput(id, value, stat)
-				app.appendChild(component)
+				if(stat == "CURRENT_XP")
+					value = file.readInt32(OFST[offset][stat]);
+				else
+					value = file.readInt16(OFST[offset][stat]);
+
+				component = makeInput(id, value, stat);
+				broHolder.appendChild(component)
 			}
+			app.appendChild(broHolder)
 		})
+		var clear = DOC.createElement('div')
+		clear.setAttribute('style', 'clear: both;')
+		app.appendChild(clear);
+	}
+
+	function calcBroLvl(bro, xp) {
+		var currLvl = 0;
+		for(var lvl = 99; lvl > 0; lvl--) {
+			xp = parseInt(xp);
+			
+			if (xp < LVLS[bro][lvl].exp && xp >= LVLS[bro][lvl - 1].exp) {
+				currLvl = lvl - 1;
+				break;
+			}
+			else if (xp > LVLS[bro][lvl].exp) {
+				currLvl = lvl;
+				break;
+			}
+		}
+		return currLvl;
 	}
 
 	function writeData(inputs)
@@ -162,15 +274,18 @@
 
 			if(id.indexOf("-") > -1)
 			{
-				var [offset, stat] = id.split("-")
-				if(stat == "CURRENT_XP")
-					file.writeInt32(OFST[offset][stat], value)
+				if(id.split('-')[0] == 'ITEMS')
+					file.writeInt8(id.split('-')[1], value)
 				else
-					file.writeInt16(OFST[offset][stat], value)
+					var [offset, stat] = id.split("-")
+					if(stat == "CURRENT_XP")
+						file.writeInt32(OFST[offset][stat], value)
+					else
+						file.writeInt16(OFST[offset][stat], value)
 			}
 
 			else
 				file.writeInt16(OFST[id], value)
 		}
 	}
-})(document, Dropzone, saveAs, OFFSETS)
+})(document, Dropzone, saveAs, OFFSETS, LEVELS, ITEMLIST)

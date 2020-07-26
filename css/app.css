@@ -14,6 +14,10 @@ body{
 	opacity: 0.8;
 }
 
+.border-middle{
+	border-width: 1px 0;
+}
+
 .head-img{
 	height: 100%;
 	width: 30%;
@@ -41,9 +45,39 @@ body{
 	border-color: #ce2218;
 }
 
+.mario-holder{
+	width: 50%;
+	float: left;
+}
+
 .luigi{
 	background-color: #279d3d;
 	border-color: #2e9f3c;
+}
+
+.luigi-holder{
+	width: 50%;
+	float: left;
+}
+
+.coffee-holder{
+	float: left;
+	width: 50%;
+}
+
+.beans-holder{
+	float: left;
+	width: 50%;
+}
+
+.jeans-holder{
+	float: left;
+	width: 50%;
+}
+
+.badges-holder{
+	float: left;
+	width: 50%;
 }
 
 .float{
@@ -58,6 +92,10 @@ body{
 
 .float:hover{
 	background-color:#ce2218;	
+}
+
+.clear{
+	clear: both;
 }
 
 .hide{
