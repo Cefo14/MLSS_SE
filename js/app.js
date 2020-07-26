@@ -44,16 +44,14 @@
 
 	function save(event) 
 	{
-		if(typeof file == "object" && file.isReady())
-		{
+		if(typeof file == "object" && file.isReady()) {
 			component = app.getElementsByTagName('input')
 			writeData(component)
 			file.save(SAVER) 
 		}
-
-		else
+		else {
 			throw "App.js: file is not load"
-			
+		}
 	}
 
 	function makeBox(title, classes)
@@ -109,8 +107,7 @@
 			input.addEventListener(CURRENT_XP_EVENT.type, CURRENT_XP_EVENT.action);
 		}
 
-		if(event)
-		{
+		if(event) {
 			input.addEventListener(event.type, event.action)
 		}
 
@@ -139,10 +136,12 @@
 				var values = ["ITEMS", "COFFEE", "JEANS", "BADGES", "ACCESSORIES", "BEANS"]
 				values.forEach(function(value) {
 					for (var i = OFST[value]["START"]; i <= OFST[value]["END"]; i++)
-						if (!["170", "231"].includes(itemID))
+						if (!["170", "231"].includes(itemID)) {
 							file.writeInt8(i, 99)
-						else
+						}
+						else {
 							file.writeInt8(i, 0)
+						}
 				})
 
 				this.classList.remove("blue-bg")
@@ -181,9 +180,10 @@
 			catHolder.className = category.toLowerCase() + '-holder';
 			catHolder.appendChild(makeBox(category));
 			for (var itemID in items[category]) {
-				if (!["170", "231"].includes(itemID))
+				if (!["170", "231"].includes(itemID)) {
 					var input = makeInput('ITEMS-' + itemID, items[category][itemID].amount, items[category][itemID].name, 'number');
 					catHolder.appendChild(input);
+				}
 			}
 			if (['CONSUMABLES', 'COFFEE', 'BEANS'].includes(category)) {
 				itemsHolder.appendChild(catHolder)
@@ -223,10 +223,12 @@
 				var id = offset.toLowerCase() + '-' + stat.toLowerCase()
 				var value
 				
-				if(stat == "CURRENT_XP")
+				if(stat == "CURRENT_XP") {
 					value = file.readInt32(OFST[offset][stat]);
-				else
+				}
+				else {
 					value = file.readInt16(OFST[offset][stat]);
+				}
 
 				component = makeInput(id, value, stat);
 				broHolder.appendChild(component)
@@ -259,33 +261,39 @@
 	{
 		for (var x in inputs)
 		{
-			if(typeof inputs[x] != "object") 
+			if(typeof inputs[x] != "object") {
 				break
+			}
 
 			var input = inputs[x]
 			var id = input.getAttribute("id").toUpperCase()
 			var value = input.value
 
-			if(id == "MAX_ITEMS") 
+			if(id == "MAX_ITEMS") {
 				continue
-
-			if(id == "MONEY")
-				file.writeInt32(OFST[id], value)
-
-			if(id.indexOf("-") > -1)
-			{
-				if(id.split('-')[0] == 'ITEMS')
-					file.writeInt8(id.split('-')[1], value)
-				else
-					var [offset, stat] = id.split("-")
-					if(stat == "CURRENT_XP")
-						file.writeInt32(OFST[offset][stat], value)
-					else
-						file.writeInt16(OFST[offset][stat], value)
 			}
 
-			else
+			if(id == "MONEY") {
+				file.writeInt32(OFST[id], value)
+			}
+
+			if(id.indexOf("-") > -1) {
+				if(id.split('-')[0] == 'ITEMS') {
+					file.writeInt8(id.split('-')[1], value)
+				}
+				else {
+					var [offset, stat] = id.split("-")
+					if(stat == "CURRENT_XP") {
+						file.writeInt32(OFST[offset][stat], value)
+					}
+					else {
+						file.writeInt16(OFST[offset][stat], value)
+					}
+				}
+			}
+			else {
 				file.writeInt16(OFST[id], value)
+			}
 		}
 	}
 })(document, Dropzone, saveAs, OFFSETS, LEVELS, ITEMLIST)
