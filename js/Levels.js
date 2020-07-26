@@ -1,4 +1,6 @@
 var LEVELS = {
+    //These exp are based on the GBA exp tables.
+    //Seems they are slightly off from what they are in the 3DS remake.
     "mario": {
         1: {exp: 0},
         2: {exp: 7},

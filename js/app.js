@@ -90,12 +90,12 @@
 		if(lvl) {
 			var lvlSpan1 = DOC.createElement("span")
 			lvlSpan1.className = "input-group-addon black-text border border-middle"
-			lvlSpan1.appendChild(DOC.createTextNode('CURRENT LVL'))
+			lvlSpan1.appendChild(DOC.createTextNode('APPROXIMATE LVL'))
 
 			var lvlSpan2 = DOC.createElement("span")
 			lvlSpan2.className = "form-control black-text border"
 			lvlSpan2.appendChild(DOC.createTextNode(calcBroLvl(bro, value)))
-			lvlSpan2.id = bro + "-current_lvl";
+			lvlSpan2.id = bro + "-approximate_lvl";
 
 			var CURRENT_XP_EVENT = {
 				type: "input",
