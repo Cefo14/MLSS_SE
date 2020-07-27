@@ -146,6 +146,7 @@ body{
 	overflow-x: hidden;
 	padding-top: 25px;
 	transition: 0.5s;
+	background-color: rgb(67, 176, 226, 0.5);
 }
 
 .optionsMenu a{
