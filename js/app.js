@@ -18,7 +18,7 @@
 			})
 		},
 
-		dictDefaultMessage: '<p>Drop or click to load the file (ML4_001.sav)</p><span class="glyphicon glyphicon-upload"></span>'
+		dictDefaultMessage: '<p>Drop or click to load the file (ML1_001.sav)</p><span class="glyphicon glyphicon-upload"></span>'
 	}
 
 	btnSave.onclick = save
