@@ -3,7 +3,14 @@
 	var app = DOC.querySelector("#app")
 	var btnSave = DOC.querySelector("#save")
 	var uploadDropZone = DOC.querySelector("#uploadDropZone")
-	
+	var btnOptions = DOC.querySelector('#options')
+	var tglBug = DOC.querySelector('.bugToggle')
+	var tglLvl = DOC.querySelector('.lvlToggle')
+	var settings = {
+		"bug": false,
+		"lvl": true,
+	}
+
 	var file
 	var component
 	
@@ -22,6 +29,9 @@
 	}
 
 	btnSave.onclick = save
+	btnOptions.onclick = tglMenu
+	tglBug.onclick = toggleBug
+	tglLvl.onclick = toggleLevel
 
 	function onChange(_file) 
 	{
@@ -54,6 +64,63 @@
 		}
 	}
 
+	function redraw() {
+		app.innerHTML = ""
+
+		addBros()
+			
+		component = makeBox("ITEMS & MONEY")
+		app.appendChild(component)
+		
+		addMoney()
+		addItems()
+	}
+
+	function redrawMenu() {
+		var bugCheck = DOC.querySelector('.bugCheck')
+		var lvlCheck = DOC.querySelector('.lvlCheck')
+		
+		if (settings.bug) {
+			bugCheck.classList.remove('glyphicon-remove')
+			bugCheck.classList.add('glyphicon-ok')
+		}
+		else {
+			bugCheck.classList.remove('glyphicon-ok')
+			bugCheck.classList.add('glyphicon-remove')
+		}
+
+		if (settings.lvl) {
+			lvlCheck.classList.remove('glyphicon-remove')
+			lvlCheck.classList.add('glyphicon-ok')
+		}
+		else {
+			lvlCheck.classList.remove('glyphicon-ok')
+			lvlCheck.classList.add('glyphicon-remove')
+		}
+	}
+
+	function tglMenu(event) {
+		btnOptions.classList.toggle('open')
+		DOC.querySelector('.optionsMenu').classList.toggle('open')
+		DOC.querySelector('.mainWrapper').classList.toggle('open')
+	}
+
+	function toggleBug() {
+		settings.bug = !settings.bug
+		redrawMenu()
+		if (file) {
+			redraw()
+		}
+	}
+
+	function toggleLevel() {
+		settings.lvl = !settings.lvl
+		redrawMenu()
+		if (file) {
+			redraw()
+		}
+	}
+
 	function makeBox(title, classes)
 	{
 		var div = DOC.createElement('div')
@@ -69,7 +136,7 @@
 		var lvl = false;
 		var bro = id.split('-')[0];
 		
-		if(id.split('-')[1] == "current_xp") {
+		if(id.split('-')[1] == "current_xp" && settings.lvl == true) {
 			lvl = true;
 		}
 		
@@ -136,11 +203,16 @@
 				var values = ["ITEMS", "COFFEE", "JEANS", "BADGES", "ACCESSORIES", "BEANS"]
 				values.forEach(function(value) {
 					for (var i = OFST[value]["START"]; i <= OFST[value]["END"]; i++)
-						if (!["170", "231"].includes(itemID)) {
-							file.writeInt8(i, 99)
+						if (settings.bug == false) {
+							if (!["170", "231"].includes(itemID)) {
+								file.writeInt8(i, 99)
+							}
+							else {
+								file.writeInt8(i, 0)
+							}
 						}
 						else {
-							file.writeInt8(i, 0)
+							file.writeInt8(i, 99)
 						}
 				})
 
@@ -180,7 +252,7 @@
 			catHolder.className = category.toLowerCase() + '-holder';
 			catHolder.appendChild(makeBox(category));
 			for (var itemID in items[category]) {
-				if (!["170", "231"].includes(itemID)) {
+				if (!["170", "231"].includes(itemID) || settings.bug) {
 					var input = makeInput('ITEMS-' + itemID, items[category][itemID].amount, items[category][itemID].name, 'number');
 					catHolder.appendChild(input);
 				}
