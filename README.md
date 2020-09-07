@@ -1,6 +1,6 @@
 # Mario and Luigi SuperStar Saga Save Editor 3DS
 
-This is a Web Version of the save editor for the game Mario &amp; Luigi SuperStar Saga nintendo 3DS™ in Javascript.
+This is a Web Version of the save editor for the game Mario &amp; Luigi SuperStar Saga for the Nintendo 3DS™ in Javascript.
 
 Fly over:
 

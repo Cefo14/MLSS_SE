@@ -27,7 +27,7 @@ var OFFSETS = {
 		"CURRENT_BONUS_STACHE" : "0x42", // int16
 	},
 
-	"ITEMS" : {
+	"CONSUMABLES" : {
 		"START" : "0x54", // int8
 		"END"   : "0x66", // int8
 	},
@@ -42,7 +42,7 @@ var OFFSETS = {
 		"END"   : "0xAA", // int8
 	},
 
-	"BADJES" : {
+	"BADGES" : {
 		"START" : "0xAC", // int8
 		"END"   : "0xE7", // int8
 	},

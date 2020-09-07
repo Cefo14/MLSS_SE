@@ -12,24 +12,36 @@
 	<link rel="stylesheet" type="text/css" href="./css/app.css">
 </head>
 	<body>
-		<center>
-			<img src="https://www.koi-nya.net/img/subidos_posts/2017/06/Mario-Luigi-Superstar-Saga-Bowser%E2%80%99s-Minions-20.png" class="img-fluid head-img">
-		</center>
-		
-		<header class="container">
-			<form action="/file-upload" class="dropzone" id="uploadDropZone">
-			</form>
-		</header>
+		<div id="optionsMenu" class="optionsMenu blue-bg">
+			<a class="bugToggle black-text"><span>Allow Bugged Equips</span><br/><span class="bugCheck glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+			<a class="lvlToggle black-text"><span>Toggle LVL Display</span><br/><span class="lvlCheck glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+		</div>
+		<div id="wrapper" class="mainWrapper">
+			<center>
+				<img src="https://www.koi-nya.net/img/subidos_posts/2017/06/Mario-Luigi-Superstar-Saga-Bowser%E2%80%99s-Minions-20.png" class="img-fluid head-img">
+			</center>
+			
+			<header class="container">
+				<form action="/file-upload" class="dropzone" id="uploadDropZone">
+				</form>
+			</header>
 
-		<section id="app" class="container"></section>
-		
-		<button id="save" class="float hide green-bg black-text">
-			<span class="glyphicon glyphicon-save	" aria-hidden="true"></span>
-		</button>
+			<button id="options" class="optionsBtn black-text">
+				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+			</button>
+
+			<section id="app" class="container"></section>
+			
+			<button id="save" class="float hide green-bg black-text">
+				<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+			</button>
+		</div>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
 		<script type="text/javascript" src="./js/Files.js"></script>
 		<script type="text/javascript" src="./js/FileSaver.js"></script>
 		<script type="text/javascript" src="./js/Offsets.js"></script>
+		<script type="text/javascript" src="./js/Levels.js"></script>
+		<script type="text/javascript" src="./js/ItemList.js"></script>
 		<script type="text/javascript" src="./js/app.js"></script>
 	</body>
 </html>
